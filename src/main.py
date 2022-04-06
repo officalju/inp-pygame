@@ -65,7 +65,7 @@ class PlayerSprite(BaseSprite):
         img_data = {
             'spritesheet': Spritesheet("res/player.png"),
         }
-        super().__init__(game, x, y, groups=game.players, layer=1, **img_data, **kwargs)
+        super().__init__(game, x, y, groups=game.players, layer=2, **img_data, **kwargs)
         self.speed = 3
         self.color = Config.RED
         self.anim_counter = 0
@@ -157,11 +157,100 @@ class PlayerSprite(BaseSprite):
                 self.rect.right = hit.rect.left
 
 
-class GroundSprite(BaseSprite):
-    def __init__(self, game, x, y):
-        super().__init__(game, x, y, groups=game.ground, layer=0)
-        self.image.fill(Config.GREEN)
 
+class Toolbar:
+    def __init__(self, width, height): 
+        self.rect.midbottom
+
+
+class WallLeft(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Mauern.png"),
+            'x_pos': 0,
+            'y_pos': 32
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+
+class WallTop(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Mauern.png"),
+            'x_pos': 32,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+
+class WallEckenLeftTop(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Mauern.png"),
+            'x_pos': 0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+
+class WallRight(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Mauern.png"),
+            'x_pos': 64,
+            'y_pos': 32
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+
+class WallEckenRightTop(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Mauern.png"),
+            'x_pos': 64,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+
+class WallEckenRightBottom(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Mauern.png"),
+            'x_pos': 64,
+            'y_pos': 64
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data) 
+
+class WallEckenLeftBottom(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Mauern.png"),
+            'x_pos': 0,
+            'y_pos': 64
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)  
+
+class WallBottom(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Mauern.png"),
+            'x_pos': 32,
+            'y_pos': 64
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)       
+
+
+class Floor(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/julian leckt.png"),
+            'x_pos': 0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.floor, layer=1, **img_data)
+
+class Schrank:
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet('res/player.png')
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
 
 class Game:
     def __init__(self):
@@ -173,21 +262,46 @@ class Game:
         self.bg = pygame.image.load("res/bg-small.png")
         self.bg_x = 0
 
+
     
     def load_map(self, mapfile):
         with open(mapfile, "r") as f:
             for (y, lines) in enumerate(f.readlines()):
                 for (x, c) in enumerate(lines):
-                    if c == "b":
-                        GroundSprite(self, x, y)
+                    Floor(self, x, y)
+                    if c == "l":   
+                        WallLeft(self, x, y)
                     if c == "p":
                         self.player = PlayerSprite(self, x, y)
+                    if c == "t":
+                        WallTop(self, x, y)
+                    if c == "e":
+                        WallEckenLeftTop(self, x, y)
+                    if c == "r":
+                        WallRight(self, x, y)
+                    if c == "E": 
+                        WallEckenLeftTop(self, x, y)
+                    if c == "R":
+                        WallEckenRightTop(self, x, y)
+                    if c == "T":
+                        WallEckenLeftBottom(self, x, y)
+                    if c == "Z":
+                        WallEckenRightBottom(self, x, y)
+                    if c == "b":
+                        WallBottom(self, x, y)
+                    if c == "S":
+                        Schrank(self, x, y)
+
+
+   
+
 
     def new(self):
         self.playing = True
 
         self.all_sprites = pygame.sprite.LayeredUpdates()
         self.ground = pygame.sprite.LayeredUpdates()
+        self.floor = pygame.sprite.LayeredUpdates()
         self.players = pygame.sprite.LayeredUpdates()
 
         self.load_map("maps/level-01.txt")
