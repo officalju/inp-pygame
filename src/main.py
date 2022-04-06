@@ -159,8 +159,11 @@ class PlayerSprite(BaseSprite):
 
 
 class Toolbar:
-    def __init__(self, width, height): 
-        self.rect.midbottom
+    def __init__(self, width, height, x, y): 
+        img_data = {
+            'spritesheet': Spritesheet("res/Hotbar")
+            
+        }
 
 
 class WallLeft(BaseSprite):
