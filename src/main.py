@@ -107,6 +107,8 @@ class PlayerSprite(BaseSprite):
         x_diff = x_c - self.rect.centerx
         y_diff = y_c - self.rect.centery
         for sprite in self.game.all_sprites:
+            if sprite in self.game.interface:
+                continue
             sprite.rect.x += x_diff
             sprite.rect.y += y_diff
         self.animate(x_diff)
@@ -157,13 +159,15 @@ class PlayerSprite(BaseSprite):
                 self.rect.right = hit.rect.left
 
 
-
-class Toolbar:
-    def __init__(self, width, height, x, y): 
+class Toolbar(BaseSprite):
+    def __init__(self, game, x, y):
         img_data = {
-            'spritesheet': Spritesheet("res/Hotbar")
-            
+            'spritesheet': Spritesheet('res/Hotbar.png'),
+            'width': 300,
+            'height': 64
         }
+        super().__init__(game, x, y, groups=game.interface, layer=3, **img_data)
+    
 
 
 class WallLeft(BaseSprite):
@@ -306,8 +310,11 @@ class Game:
         self.ground = pygame.sprite.LayeredUpdates()
         self.floor = pygame.sprite.LayeredUpdates()
         self.players = pygame.sprite.LayeredUpdates()
+        self.interface = pygame.sprite.LayeredUpdates()
+
 
         self.load_map("maps/level-01.txt")
+        Toolbar(self, 0, 0)
 
     def handle_events(self):
         for event in pygame.event.get():
