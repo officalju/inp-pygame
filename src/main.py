@@ -1,6 +1,9 @@
+from turtle import width
 import pygame
 
 import sys
+
+
 
 class Spritesheet:
     def __init__(self, file):
@@ -62,16 +65,16 @@ class BaseSprite(pygame.sprite.Sprite):
 
 class PlayerSprite(BaseSprite):
     def __init__(self, game, x, y, **kwargs):
-        img_data = {
-            'spritesheet': Spritesheet("res/player.png"),
-        }
-        super().__init__(game, x, y, groups=game.players, layer=2, **img_data, **kwargs)
+        super().__init__(game, x, y, groups=game.players, layer=2, **kwargs)
         self.speed = 3
         self.color = Config.RED
         self.anim_counter = 0
         self.animation_frames = [0, 32]
         self.current_frame = 0
         self.animation_duration = 30
+        
+
+
         
 
     def animate(self, x_diff):
@@ -93,12 +96,16 @@ class PlayerSprite(BaseSprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.rect.x = self.rect.x - self.speed
+            pygame.image.load("res/Fertig hinten.png")
         if keys[pygame.K_RIGHT]:
             self.rect.x = self.rect.x + self.speed
+            pygame.image.load("res/Fertig hinten.png")
         if keys[pygame.K_UP]:
             self.rect.y = self.rect.y - self.speed
+            pygame.image.load("res/Fertig hinten.png")
         if keys[pygame.K_DOWN]:
             self.rect.y = self.rect.y + self.speed
+            pygame.image.load("res/Fertig hinten.png")
         self.update_camera()
 
 
@@ -159,15 +166,17 @@ class PlayerSprite(BaseSprite):
                 self.rect.right = hit.rect.left
 
 
+
+
 class Toolbar(BaseSprite):
     def __init__(self, game, x, y):
         img_data = {
-            'spritesheet': Spritesheet('res/Hotbar.png'),
-            'width': 300,
-            'height': 64
+            'spritesheet': Spritesheet("res/Toolbar.png"),
+            'x_pos':0,
+            'y_pos': 0
         }
-        super().__init__(game, x, y, groups=game.interface, layer=3, **img_data)
-    
+        super().__init__(game, x, y, groups=game.interface, layer=4, **img_data)
+
 
 
 class WallLeft(BaseSprite):
@@ -246,7 +255,7 @@ class WallBottom(BaseSprite):
 class Floor(BaseSprite):
     def __init__(self, game, x, y):
         img_data = {
-            'spritesheet': Spritesheet("res/julian leckt.png"),
+            'spritesheet': Spritesheet("res/Boden_.png"),
             'x_pos': 0,
             'y_pos': 0
         }
@@ -259,6 +268,8 @@ class Schrank:
         }
         super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
 
+
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -268,6 +279,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.bg = pygame.image.load("res/bg-small.png")
         self.bg_x = 0
+
+        (Toolbar,(0,0))
 
 
     
@@ -311,6 +324,7 @@ class Game:
         self.floor = pygame.sprite.LayeredUpdates()
         self.players = pygame.sprite.LayeredUpdates()
         self.interface = pygame.sprite.LayeredUpdates()
+        self.interface
 
 
         self.load_map("maps/level-01.txt")
@@ -320,6 +334,8 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
+
+    
 
     def update(self):
         self.all_sprites.update()
