@@ -69,10 +69,9 @@ class PlayerSprite(BaseSprite):
         self.speed = 3
         self.color = Config.RED
         self.anim_counter = 0
-        self.animation_frames = [0, 32]
+        self.animation_frames = [0]
         self.current_frame = 0
         self.animation_duration = 30
-        
 
 
         
@@ -96,17 +95,18 @@ class PlayerSprite(BaseSprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.rect.x = self.rect.x - self.speed
-            pygame.image.load("res/Fertig hinten.png")
+            self.image = pygame.image.load("res/Fertig links.png")
         if keys[pygame.K_RIGHT]:
             self.rect.x = self.rect.x + self.speed
-            pygame.image.load("res/Fertig hinten.png")
+            self.image = pygame.image.load("res/Fertig rechts.png")
         if keys[pygame.K_UP]:
             self.rect.y = self.rect.y - self.speed
-            pygame.image.load("res/Fertig hinten.png")
+            self.image = pygame.image.load("res/Fertig hinten.png")
         if keys[pygame.K_DOWN]:
             self.rect.y = self.rect.y + self.speed
-            pygame.image.load("res/Fertig hinten.png")
+            self.image = pygame.image.load("res/Fertig vorn.png")
         self.update_camera()
+
 
 
     def update_camera(self):
@@ -268,6 +268,12 @@ class Schrank:
         }
         super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
 
+class Bild(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Gemälde (ganz).png")
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)  
 
 
 class Game:
@@ -311,6 +317,8 @@ class Game:
                         WallBottom(self, x, y)
                     if c == "S":
                         Schrank(self, x, y)
+                    if c == "B":
+                        Bild(self, x, y)
 
 
    
