@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    background: #ffffff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Implementieren Sie Ihre Änderungen hier. Lassen Sie den Code oben so wie er
+* ist!!! */
+.titel {
+  text-align: center;
+  border: 5px solid rgb(0, 76, 255);
+  margin:10px;
+}
+
+.text {
+    background-color: white;
+    margin:10px;
+    margin-left:600px;
+    margin-right:500px;
+}
+.textus {
+    background-color: white;
+    margin:10px;
+    margin-left:600px;
+    margin-right:500px;
+}
+ 
+.nav-link {
+color:white;
+background:rgb(0, 76, 255);
+font-size: 20px;
+text-decoration: none;
+margin: 50px;
+}
+
+.navbar{
+list-style: none;
+margin:25px;
+background: rgb(0, 76, 255);
+padding: 20px;
+}
+
+
