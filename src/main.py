@@ -152,6 +152,8 @@ class PlayerSprite(BaseSprite):
 
 
     def check_collision(self):
+        
+        
         hits = pygame.sprite.spritecollide(self, self.game.ground, False)
         for hit in hits:
             if self.is_standing(hit):
@@ -169,15 +171,14 @@ class PlayerSprite(BaseSprite):
             else:
                 self.rect.right = hit.rect.left
 
-        hits = pygame.sprite.spritecollide(self, self.game.items, False)
-        if hits:
-            for hit in hits: 
-                hit.image = pygame.image.load("res/Gemälde (kaputt).png")
+
+        
                 
         hits = pygame.sprite.spritecollide(self, self.game.items, False)
         if hits:
             for hit in hits: 
                 hit.image = pygame.image.load("res/Gemälde (kaputt).png")
+                pass
 
         hits = pygame.sprite.spritecollide(self, self.game.knife, False)
         if hits:
@@ -203,7 +204,7 @@ class ToolbarBackground(BaseSprite):
             'x_pos':0,
             'y_pos': 0
         }
-        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+        super().__init__(game, x, y, groups=game.interface, layer=4, **img_data)
 
 class knife(BaseSprite):
     def __init__(self, game, x, y):
@@ -212,7 +213,7 @@ class knife(BaseSprite):
             'x_pos':0,
             'y_pos': 0
         }
-        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+        super().__init__(game, x, y, groups=game.interface, layer=4, **img_data)
 
 class WallLeft(BaseSprite):
     def __init__(self, game, x, y, width=Config.TILE_SIZE, height=Config.TILE_SIZE):
@@ -324,7 +325,7 @@ class Game:
         self.bg = pygame.image.load("res/bg-small.png")
         self.bg_x = 0
 
-        self.Toolbarbackground = ToolbarBackground(self, 0, 0)  
+     
 
 
     
@@ -359,6 +360,7 @@ class Game:
                     if c == "S":
                         Schrank(self, x, y)
                     if c == "B":
+                        
                         Bild(self, x, y)
                     if c == "K":
                         ToolbarSlot(self, x, y)
@@ -377,6 +379,7 @@ class Game:
         self.interface = pygame.sprite.LayeredUpdates()
         self.items = pygame.sprite.LayeredUpdates()
         self.knife = pygame.sprite.LayeredUpdates()
+        self.Toolbarbackground = ToolbarBackground(self, 0, 0)  
 
 
         self.load_map("maps/level-01.txt")
