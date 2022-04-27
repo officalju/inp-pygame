@@ -1,3 +1,5 @@
+from ctypes.wintypes import RGB
+from pickle import FALSE
 from turtle import width
 import pygame
 
@@ -41,6 +43,7 @@ class BaseSprite(pygame.sprite.Sprite):
         self.y_pos = y_pos
         self.width = width
         self.height = height
+        
 
         if spritesheet == None:
             self.image = pygame.Surface([self.width, self.height])
@@ -72,9 +75,10 @@ class PlayerSprite(BaseSprite):
         self.animation_frames = [0]
         self.current_frame = 0
         self.animation_duration = 30
-
-
+        self.image = pygame.image.load("res/Fertig hinten.png")
         
+
+   
 
     def animate(self, x_diff):
         self.anim_counter += abs(x_diff)
@@ -165,27 +169,60 @@ class PlayerSprite(BaseSprite):
             else:
                 self.rect.right = hit.rect.left
 
+        hits = pygame.sprite.spritecollide(self, self.game.items, False)
+        if hits:
+            for hit in hits: 
+                hit.image = pygame.image.load("res/Gemälde (kaputt).png")
+                
+        hits = pygame.sprite.spritecollide(self, self.game.items, False)
+        if hits:
+            for hit in hits: 
+                hit.image = pygame.image.load("res/Gemälde (kaputt).png")
 
+        hits = pygame.sprite.spritecollide(self, self.game.knife, False)
+        if hits:
+            for hit in hits:
+                knife(self.game, 0, 0)
+                hit.kill()
+                
+ 
 
+    
 
-class Toolbar(BaseSprite):
+class ToolbarSlot(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/knife.png")
+        }
+        super().__init__(game, x, y, groups=game.knife, layer=1, **img_data)
+
+class ToolbarBackground(BaseSprite):
     def __init__(self, game, x, y):
         img_data = {
             'spritesheet': Spritesheet("res/Toolbar.png"),
             'x_pos':0,
             'y_pos': 0
         }
-        super().__init__(game, x, y, groups=game.interface, layer=4, **img_data)
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
 
-
+class knife(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/knife.png"),
+            'x_pos':0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
 
 class WallLeft(BaseSprite):
-    def __init__(self, game, x, y):
+    def __init__(self, game, x, y, width=Config.TILE_SIZE, height=Config.TILE_SIZE):
         img_data = {
             'spritesheet': Spritesheet("res/Mauern.png"),
             'x_pos': 0,
             'y_pos': 32
         }
+        self.width = width
+        self.height = height
         super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
 
 class WallTop(BaseSprite):
@@ -273,7 +310,8 @@ class Bild(BaseSprite):
         img_data = {
             'spritesheet': Spritesheet("res/Gemälde (ganz).png")
         }
-        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)  
+        super().__init__(game, x, y, groups=game.items, layer=1, **img_data)  
+ 
 
 
 class Game:
@@ -286,8 +324,11 @@ class Game:
         self.bg = pygame.image.load("res/bg-small.png")
         self.bg_x = 0
 
-        (Toolbar,(0,0))
+        self.Toolbarbackground = ToolbarBackground(self, 0, 0)  
 
+
+    
+    
 
     
     def load_map(self, mapfile):
@@ -319,9 +360,11 @@ class Game:
                         Schrank(self, x, y)
                     if c == "B":
                         Bild(self, x, y)
+                    if c == "K":
+                        ToolbarSlot(self, x, y)
 
 
-   
+
 
 
     def new(self):
@@ -332,11 +375,12 @@ class Game:
         self.floor = pygame.sprite.LayeredUpdates()
         self.players = pygame.sprite.LayeredUpdates()
         self.interface = pygame.sprite.LayeredUpdates()
-        self.interface
+        self.items = pygame.sprite.LayeredUpdates()
+        self.knife = pygame.sprite.LayeredUpdates()
 
 
         self.load_map("maps/level-01.txt")
-        Toolbar(self, 0, 0)
+        
 
     def handle_events(self):
         for event in pygame.event.get():
