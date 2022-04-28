@@ -1,5 +1,6 @@
 from ctypes.wintypes import RGB
 from pickle import FALSE
+from re import X
 from turtle import width
 import pygame
 
@@ -76,6 +77,7 @@ class PlayerSprite(BaseSprite):
         self.current_frame = 0
         self.animation_duration = 30
         self.image = pygame.image.load("res/Fertig hinten.png")
+        self.has_knife = False
         
 
    
@@ -171,20 +173,40 @@ class PlayerSprite(BaseSprite):
             else:
                 self.rect.right = hit.rect.left
 
+        hits = pygame.sprite.spritecollide(self, self.game.items, False)
+        for hit in hits:
+            if self.is_standing(hit):
+                self.rect.bottom = hit.rect.top
+                break
+            if self.hit_head(hit):
+                self.rect.top = hit.rect.bottom
+                break
+
+        hits = pygame.sprite.spritecollide(self, self.game.items, False)
+        for hit in hits:
+            hit_dir = hit.rect.x - self.rect.x
+            if hit_dir < 0:
+                self.rect.left = hit.rect.right
+            else:
+                self.rect.right = hit.rect.left
 
         
-                
+        
         hits = pygame.sprite.spritecollide(self, self.game.items, False)
-        if hits:
-            for hit in hits: 
-                hit.image = pygame.image.load("res/Gemälde (kaputt).png")
-                pass
+        if hits and self.has_knife == True:
+            for hit in hits:
+                hit.kill()
+                BildKaputt(self.game, hit.rect.x, hit.rect.y)
+                
+                
 
         hits = pygame.sprite.spritecollide(self, self.game.knife, False)
         if hits:
             for hit in hits:
                 knife(self.game, 0, 0)
                 hit.kill()
+                self.has_knife = True
+
                 
  
 
@@ -311,7 +333,14 @@ class Bild(BaseSprite):
         img_data = {
             'spritesheet': Spritesheet("res/Gemälde (ganz).png")
         }
-        super().__init__(game, x, y, groups=game.items, layer=1, **img_data)  
+        super().__init__(game, x, y, groups=game.items, layer=1, **img_data) 
+
+class BildKaputt(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Gemälde (kaputt).png")
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data) 
  
 
 
