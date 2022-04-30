@@ -29,7 +29,7 @@ class Config:
     GREEN = (0, 255, 0)
     GREY = (128, 128, 128)
     WHITE = (255, 255, 255)
-    FPS = 30
+    FPS = 25
     BG_SPEED = 1
 
 
@@ -390,6 +390,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.bg = pygame.image.load("res/bg-small.png")
         self.bg_x = 0
+        pygame.display.set_caption("Unser erstes Pygame-Spiel")
 
      
 
@@ -482,8 +483,8 @@ class Game:
             self.handle_events()
             self.update()
             self.draw()
-            counter_text = self.font.render(f'{counter}', False, (0, 0, 0))
-            self.screen.blit(counter_text, (0, 100))
+            counter_text = self.font.render(f'{counter}', False, (Config.WHITE))
+            self.screen.blit(counter_text, (620, 0))
             counter -= 1
             pygame.display.flip()
             self.clock.tick(Config.FPS)
@@ -492,7 +493,7 @@ class Game:
 
     def GameOver(self):
         while True:
-            self.screen.fill(Config.BLACK)
+            self.screen.fill(Config.WHITE)
             display_text = pygame.image.load("res/GameOver.png")
             display_text = pygame.transform.scale(display_text,(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT))
             self.screen.blit(display_text, (0, 0))
