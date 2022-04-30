@@ -173,6 +173,23 @@ class PlayerSprite(BaseSprite):
             else:
                 self.rect.right = hit.rect.left
 
+        hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
+        for hit in hits:
+            if self.is_standing(hit):
+                self.rect.bottom = hit.rect.top
+                break
+            if self.hit_head(hit):
+                self.rect.top = hit.rect.bottom
+                break
+
+        hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
+        for hit in hits:
+            hit_dir = hit.rect.x - self.rect.x
+            if hit_dir < 0:
+                self.rect.left = hit.rect.right
+            else:
+                self.rect.right = hit.rect.left
+
         hits = pygame.sprite.spritecollide(self, self.game.items, False)
         for hit in hits:
             if self.is_standing(hit):
@@ -190,15 +207,6 @@ class PlayerSprite(BaseSprite):
             else:
                 self.rect.right = hit.rect.left
 
-        
-    
-        hits = pygame.sprite.spritecollide(self, self.game.items, False)
-        if hits and self.has_knife:
-            for hit in hits:
-                BildKaputt(self.game, hit.rect.x, hit.rect.y)
-                hit.kill()
-                
-                
 
         hits = pygame.sprite.spritecollide(self, self.game.knife, False)
         if hits:
@@ -206,6 +214,21 @@ class PlayerSprite(BaseSprite):
                 knife(self.game, 0, 0)
                 hit.kill()
                 self.has_knife = True
+
+        hits = pygame.sprite.spritecollide(self, self.game.items, False)
+        if hits and self.has_knife:
+            for hit in hits:
+                BildKaputt(self.game, hit.rect.x, hit.rect.y)
+                hit.kill()
+                
+                
+                
+
+        hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
+        if hits:
+            for hit in hits:
+                pass
+                
 
                 
 
@@ -355,7 +378,7 @@ class Tür(BaseSprite):
         img_data = {
             'spritesheet': Spritesheet("res/Tür.png")
         }
-        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data) 
+        super().__init__(game, x, y, groups=game.Tür, layer=1, **img_data) 
 
 
 class Game:
@@ -425,6 +448,7 @@ class Game:
         self.interface = pygame.sprite.LayeredUpdates()
         self.items = pygame.sprite.LayeredUpdates()
         self.knife = pygame.sprite.LayeredUpdates()
+        self.Tür = pygame.sprite.LayeredUpdates()
         self.Toolbarbackground = ToolbarBackground(self, 0, 0)  
 
 
@@ -453,18 +477,46 @@ class Game:
         pygame.display.update()
 
     def game_loop(self):
+        counter = 1000
         while self.playing:
             self.handle_events()
             self.update()
             self.draw()
+            counter_text = self.font.render(f'{counter}', False, (0, 0, 0))
+            self.screen.blit(counter_text, (0, 100))
+            counter -= 1
+            pygame.display.flip()
             self.clock.tick(Config.FPS)
+            if counter == 0:
+                break
 
+    def GameOver(self):
+        while True:
+            self.screen.fill(Config.BLACK)
+            display_text = pygame.image.load("res/GameOver.png")
+            display_text = pygame.transform.scale(display_text,(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT))
+            self.screen.blit(display_text, (0, 0))
+            
+            pygame.display.flip()
+            self.clock.tick(Config.FPS)
+            
+
+            pygame.event.get()
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                break
+            
+                    
     
 def main():
     g = Game()
+    
+    
     g.new()
 
     g.game_loop()
+
+    g.GameOver()
 
     pygame.quit()
     sys.exit()
