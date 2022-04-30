@@ -191,12 +191,12 @@ class PlayerSprite(BaseSprite):
                 self.rect.right = hit.rect.left
 
         
-        
+    
         hits = pygame.sprite.spritecollide(self, self.game.items, False)
-        if hits and self.has_knife == True:
+        if hits and self.has_knife:
             for hit in hits:
-                hit.kill()
                 BildKaputt(self.game, hit.rect.x, hit.rect.y)
+                hit.kill()
                 
                 
 
@@ -208,7 +208,6 @@ class PlayerSprite(BaseSprite):
                 self.has_knife = True
 
                 
- 
 
     
 
@@ -309,7 +308,16 @@ class WallBottom(BaseSprite):
             'x_pos': 32,
             'y_pos': 64
         }
-        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)       
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)      
+
+class Laterne(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Laterne.png"),
+            'x_pos': 0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)  
 
 
 class Floor(BaseSprite):
@@ -341,7 +349,13 @@ class BildKaputt(BaseSprite):
             'spritesheet': Spritesheet("res/Gemälde (kaputt).png")
         }
         super().__init__(game, x, y, groups=game.ground, layer=1, **img_data) 
- 
+
+class Tür(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Tür.png")
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data) 
 
 
 class Game:
@@ -357,8 +371,7 @@ class Game:
      
 
 
-    
-    
+
 
     
     def load_map(self, mapfile):
@@ -393,6 +406,10 @@ class Game:
                         Bild(self, x, y)
                     if c == "K":
                         ToolbarSlot(self, x, y)
+                    if c == "L":
+                        Laterne(self, x, y)
+                    if c == "D":
+                        Tür(self, x, y)
 
 
 
