@@ -204,12 +204,12 @@ class PlayerSprite(BaseSprite):
                 self.has_knife = True
                 
 
-        hits = pygame.sprite.spritecollide(self, self.game.groups, False)
+        hits = pygame.sprite.spritecollide(self, self.game.items, False)
         if hits and self.has_knife:
             for hit in hits:
                 BildKaputt(self.game, hit.rect.x, hit.rect.y)
                 hit.kill()
-                import 
+                
                 
                 
                 
@@ -349,7 +349,7 @@ class Bild(BaseSprite):
         img_data = {
             'spritesheet': Spritesheet("res/Gemälde (ganz).png")
         }
-        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data) 
+        super().__init__(game, x, y, groups=game.items, layer=1, **img_data) 
 
 class BildKaputt(BaseSprite):
     def __init__(self, game, x, y):
