@@ -1,8 +1,7 @@
 import pygame, random
 
 pygame.init()
-
-WINDOW_WIDTH = 880
+WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Dungeon Puzzle')
@@ -24,22 +23,18 @@ font_title = pygame.font.Font('Hello Avocado.ttf', 64)
 font_content = pygame.font.Font('Hello Avocado.ttf', 40)
 
 # start screen
-title_text = font_title.render('Puzzle Game', True, CRIMSON)
+title_text = font_title.render('Puzzle Game', True, GREEN)
 title_rect = title_text.get_rect()
 title_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 80)
 
-medium_text = font_content.render("Press 'M' - Medium (4x4)", True, ORANGE)
+medium_text = font_content.render("Press M to start the Puzzle", True, ORANGE)
 medium_rect = medium_text.get_rect()
 medium_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 90)
 
-# end screen
-play_again_text = font_title.render('Play Again?', True, WHITE)
+play_again_text = font_title.render('Well done!', True, WHITE)
 play_again_rect = play_again_text.get_rect()
 play_again_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
 
-continue_text = font_content.render('Press Space', True, WHITE)
-continue_rect = continue_text.get_rect()
-continue_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 50)
 
 
 selected_img = None
@@ -118,7 +113,6 @@ while running:
                     else:
                         current_img = cell
                         if current_img['order'] != selected_img['order']:
-                            #swap images
                             temp = selected_img['pos']
                             cells[selected_img['order']]['pos'] = cells[current_img['order']]['pos']
                             cells[current_img['order']]['pos'] = temp
@@ -126,7 +120,6 @@ while running:
                             cells[selected_img['order']]['border'] = WHITE
                             selected_img = None
 
-                            # check if puzzle is solved
                             is_game_over = True
                             for cell in cells:
                                 if cell['order'] != cell['pos']:
@@ -150,7 +143,6 @@ while running:
         else:
             screen.blit(bg, bg_rect)
             screen.blit(play_again_text, play_again_rect)
-            screen.blit(continue_text, continue_rect)
 
     pygame.display.update()
     clock.tick(FPS)
