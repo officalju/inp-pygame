@@ -1,9 +1,9 @@
 from ctypes.wintypes import RGB
+from distutils.util import execute
 from pickle import FALSE
 from re import X
 from turtle import width
 import pygame
-import  game 
 
 import sys
 
@@ -226,10 +226,6 @@ class PlayerSprite(BaseSprite):
                 
 
         hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
-        if hits:
-            for hit in hits:
-                pass
-        hits= pygame.sprite.spritecollide(self,self.game.Schrank, False)
         if hits:
             for hit in hits:
                 pass
