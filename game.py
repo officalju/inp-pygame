@@ -13,7 +13,7 @@ clock = pygame.time.Clock()
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
-CRIMSON = (220, 20, 60)
+GREEN = (0, 200, 60)
 ORANGE = (255, 127, 0)
 
 bg = pygame.image.load('elephant.jpg')
