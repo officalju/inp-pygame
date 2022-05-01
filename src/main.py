@@ -193,22 +193,7 @@ class PlayerSprite(BaseSprite):
             else:
                 self.rect.right = hit.rect.left
 
-        hits = pygame.sprite.spritecollide(self, self.game.items, False)
-        for hit in hits:
-            if self.is_standing(hit):
-                self.rect.bottom = hit.rect.top
-                break
-            if self.hit_head(hit):
-                self.rect.top = hit.rect.bottom
-                break
 
-        hits = pygame.sprite.spritecollide(self, self.game.items, False)
-        for hit in hits:
-            hit_dir = hit.rect.x - self.rect.x
-            if hit_dir < 0:
-                self.rect.left = hit.rect.right
-            else:
-                self.rect.right = hit.rect.left
 
 
         hits = pygame.sprite.spritecollide(self, self.game.knife, False)
@@ -219,11 +204,12 @@ class PlayerSprite(BaseSprite):
                 self.has_knife = True
                 
 
-        hits = pygame.sprite.spritecollide(self, self.game.items, False)
+        hits = pygame.sprite.spritecollide(self, self.game.groups, False)
         if hits and self.has_knife:
             for hit in hits:
                 BildKaputt(self.game, hit.rect.x, hit.rect.y)
                 hit.kill()
+                import 
                 
                 
                 
@@ -363,7 +349,7 @@ class Bild(BaseSprite):
         img_data = {
             'spritesheet': Spritesheet("res/Gemälde (ganz).png")
         }
-        super().__init__(game, x, y, groups=game.items, layer=1, **img_data) 
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data) 
 
 class BildKaputt(BaseSprite):
     def __init__(self, game, x, y):
