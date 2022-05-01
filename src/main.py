@@ -4,6 +4,8 @@ from re import X
 from turtle import width
 import pygame
 
+
+
 import sys
 
 
@@ -214,6 +216,7 @@ class PlayerSprite(BaseSprite):
                 knife(self.game, 0, 0)
                 hit.kill()
                 self.has_knife = True
+                
 
         hits = pygame.sprite.spritecollide(self, self.game.items, False)
         if hits and self.has_knife:
