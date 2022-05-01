@@ -5,7 +5,7 @@ pygame.init()
 WINDOW_WIDTH = 880
 WINDOW_HEIGHT = 600
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption('Puzzle Game')
+pygame.display.set_caption('Dungeon Puzzle')
 
 FPS = 10
 clock = pygame.time.Clock()
