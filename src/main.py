@@ -380,6 +380,15 @@ class Tür(BaseSprite):
         }
         super().__init__(game, x, y, groups=game.Tür, layer=1, **img_data) 
 
+class Schrank(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Schrank.png"),
+            'x_pos': 0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+
 
 class Game:
     def __init__(self):
@@ -434,6 +443,8 @@ class Game:
                         Laterne(self, x, y)
                     if c == "D":
                         Tür(self, x, y)
+                    if c == "s":
+                        Schrank(self, x, y)
 
 
 
