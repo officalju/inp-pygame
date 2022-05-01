@@ -3,6 +3,7 @@ from pickle import FALSE
 from re import X
 from turtle import width
 import pygame
+import  game 
 
 import sys
 
@@ -228,11 +229,10 @@ class PlayerSprite(BaseSprite):
         if hits:
             for hit in hits:
                 pass
-                
-
-                
-
-    
+        hits= pygame.sprite.spritecollide(self,self.game.Schrank, False)
+        if hits:
+            for hit in hits:
+                pass
 
 class ToolbarSlot(BaseSprite):
     def __init__(self, game, x, y):

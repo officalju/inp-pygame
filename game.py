@@ -48,7 +48,6 @@ cell_width = None
 cell_height = None
 
 cells = []
-
 def start_game(mode):
     global cells, cell_width, cell_height, show_start_screen
 
