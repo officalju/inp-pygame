@@ -28,21 +28,9 @@ title_text = font_title.render('Puzzle Game', True, CRIMSON)
 title_rect = title_text.get_rect()
 title_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 80)
 
-choose_text = font_content.render('Choose your difficulty', True, CRIMSON)
-choose_rect = choose_text.get_rect()
-choose_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 20)
-
-easy_text = font_content.render("Press 'E' - Easy (3x3)", True, ORANGE)
-easy_rect = easy_text.get_rect()
-easy_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 40)
-
 medium_text = font_content.render("Press 'M' - Medium (4x4)", True, ORANGE)
 medium_rect = medium_text.get_rect()
 medium_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 90)
-
-hard_text = font_content.render("Press 'H' - Hard (5x5)", True, ORANGE)
-hard_rect = hard_text.get_rect()
-hard_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 140)
 
 # end screen
 play_again_text = font_title.render('Play Again?', True, WHITE)
@@ -148,10 +136,7 @@ while running:
     if show_start_screen:
         screen.fill(BLACK)
         screen.blit(title_text, title_rect)
-        screen.blit(choose_text, choose_rect)
-        screen.blit(easy_text, easy_rect)
         screen.blit(medium_text, medium_rect)
-        screen.blit(hard_text, hard_rect)
     else:
 
         screen.fill(WHITE)
