@@ -7,6 +7,7 @@ import pygame
 
 
 
+
 import sys
 
 
@@ -25,8 +26,8 @@ class Spritesheet:
 
 class Config:
     TILE_SIZE = 32
-    WINDOW_WIDTH = TILE_SIZE * 20
-    WINDOW_HEIGHT = TILE_SIZE * 10
+    WINDOW_WIDTH = TILE_SIZE * 20 
+    WINDOW_HEIGHT = TILE_SIZE * 10 
     BLACK = (0, 0, 0)
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
@@ -81,6 +82,7 @@ class PlayerSprite(BaseSprite):
         self.animation_duration = 30
         self.image = pygame.image.load("res/Fertig hinten.png")
         self.has_knife = False
+        
         
 
    
@@ -158,7 +160,22 @@ class PlayerSprite(BaseSprite):
 
     def check_collision(self):
         
-        
+
+        hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
+        if hits:
+            import Puzzle
+
+        hits = pygame.sprite.spritecollide(self, self.game.items, False)
+        if hits and self.has_knife:
+            for hit in hits:
+                hit.kill()
+                BildKaputt(self.game, hit.rect.x / 32, hit.rect.y / 32 )
+
+
+
+
+
+
         hits = pygame.sprite.spritecollide(self, self.game.ground, False)
         for hit in hits:
             if self.is_standing(hit):
@@ -175,26 +192,6 @@ class PlayerSprite(BaseSprite):
                 self.rect.left = hit.rect.right
             else:
                 self.rect.right = hit.rect.left
-
-        hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
-        for hit in hits:
-            if self.is_standing(hit):
-                self.rect.bottom = hit.rect.top
-                break
-            if self.hit_head(hit):
-                self.rect.top = hit.rect.bottom
-                break
-
-        hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
-        for hit in hits:
-            hit_dir = hit.rect.x - self.rect.x
-            if hit_dir < 0:
-                self.rect.left = hit.rect.right
-            else:
-                self.rect.right = hit.rect.left
-
-
-
 
         hits = pygame.sprite.spritecollide(self, self.game.knife, False)
         if hits:
@@ -202,22 +199,15 @@ class PlayerSprite(BaseSprite):
                 knife(self.game, 0, 0)
                 hit.kill()
                 self.has_knife = True
+        
+      
                 
-
-        hits = pygame.sprite.spritecollide(self, self.game.items, False)
-        if hits and self.has_knife:
-            for hit in hits:
-                BildKaputt(self.game, hit.rect.x, hit.rect.y)
-                hit.kill()
+ 
+            
                 
                 
                 
-                
-
-        hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
-        if hits:
-            for hit in hits:
-                pass
+        
 
 class ToolbarSlot(BaseSprite):
     def __init__(self, game, x, y):
@@ -337,19 +327,12 @@ class Floor(BaseSprite):
         }
         super().__init__(game, x, y, groups=game.floor, layer=1, **img_data)
 
-class Schrank:
-    def __init__(self, game, x, y):
-        img_data = {
-            'spritesheet': Spritesheet('res/player.png')
-        }
-        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
-
 class Bild(BaseSprite):
     def __init__(self, game, x, y):
         img_data = {
             'spritesheet': Spritesheet("res/Gemälde (ganz).png")
         }
-        super().__init__(game, x, y, groups=game.items, layer=1, **img_data) 
+        super().__init__(game, x, y, groups=(game.items, game.ground), layer=1, **img_data) 
 
 class BildKaputt(BaseSprite):
     def __init__(self, game, x, y):
@@ -363,7 +346,7 @@ class Tür(BaseSprite):
         img_data = {
             'spritesheet': Spritesheet("res/Tür.png")
         }
-        super().__init__(game, x, y, groups=game.Tür, layer=1, **img_data) 
+        super().__init__(game, x, y, groups=(game.Tür, game.ground), layer=1, **img_data) 
 
 class Schrank(BaseSprite):
     def __init__(self, game, x, y):
@@ -372,7 +355,7 @@ class Schrank(BaseSprite):
             'x_pos': 0,
             'y_pos': 0
         }
-        super().__init__(game, x, y, groups=game.ground, layer=1, **img_data)
+        super().__init__(game, x, y, groups=(game.Schrank, game.ground), layer=1, **img_data)
 
 
 class Game:
@@ -446,6 +429,7 @@ class Game:
         self.items = pygame.sprite.LayeredUpdates()
         self.knife = pygame.sprite.LayeredUpdates()
         self.Tür = pygame.sprite.LayeredUpdates()
+        self.Schrank = pygame.sprite.LayeredUpdates()
         self.Toolbarbackground = ToolbarBackground(self, 0, 0)  
 
 
@@ -480,7 +464,7 @@ class Game:
             self.update()
             self.draw()
             counter_text = self.font.render(f'{counter}', False, (Config.WHITE))
-            self.screen.blit(counter_text, (620, 0))
+            self.screen.blit(counter_text, (600, 0))
             counter -= 1
             pygame.display.flip()
             self.clock.tick(Config.FPS)

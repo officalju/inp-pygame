@@ -1,12 +1,14 @@
 import pygame, random
+from main import counter
 
 pygame.init()
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption('Dungeon Puzzle')
 
-FPS = 10
+
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 320
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+FPS = 25
 clock = pygame.time.Clock()
 
 WHITE = (255, 255, 255)
@@ -15,7 +17,7 @@ RED = (255, 0, 0)
 GREEN = (0, 200, 60)
 ORANGE = (255, 127, 0)
 
-bg = pygame.image.load('elephant.jpg')
+bg = pygame.image.load('res/DungeonEscape.png')
 bg_rect = bg.get_rect()
 bg_rect.topleft = (0, 0)
 
@@ -27,13 +29,17 @@ title_text = font_title.render('Puzzle Game', True, GREEN)
 title_rect = title_text.get_rect()
 title_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 80)
 
-medium_text = font_content.render("Press M to start the Puzzle", True, ORANGE)
+medium_text = font_content.render("Press M to \ start the Puzzle", True, ORANGE)
 medium_rect = medium_text.get_rect()
 medium_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 90)
 
-play_again_text = font_title.render('Well done!', True, WHITE)
+play_again_text = font_title.render('Well done! \ You finally escaped!', True, WHITE)
 play_again_rect = play_again_text.get_rect()
 play_again_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
+
+continue_text = font_content.render('Press Space', True, WHITE)
+continue_rect = continue_text.get_rect()
+continue_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 50)
 
 
 
@@ -140,8 +146,19 @@ while running:
                 screen.blit(bg, cells[i]['rect'], img_area)
                 pygame.draw.rect(screen, cells[i]['border'], cells[i]['rect'], 1)
         else:
+                    screen.fill(WHITE)
+
+        if not is_game_over:
+            for i, val in enumerate(cells):
+                pos = cells[i]['pos']
+                img_area = pygame.Rect(cells[pos]['rect'].x, cells[pos]['rect'].y, cell_width, cell_height)
+                screen.blit(bg, cells[i]['rect'], img_area)
+                pygame.draw.rect(screen, cells[i]['border'], cells[i]['rect'], 1)
+        else:
             screen.blit(bg, bg_rect)
             screen.blit(play_again_text, play_again_rect)
+            screen.blit(continue_text, continue_rect)
+            
 
     pygame.display.update()
     clock.tick(FPS)
