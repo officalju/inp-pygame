@@ -1,7 +1,10 @@
 import pygame, random
-from main import counter
+from pygame import mixer
+
+
 
 pygame.init()
+
 
 
 WINDOW_WIDTH = 640
@@ -33,9 +36,13 @@ medium_text = font_content.render("Press M to \ start the Puzzle", True, ORANGE)
 medium_rect = medium_text.get_rect()
 medium_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 90)
 
-play_again_text = font_title.render('Well done! \ You finally escaped!', True, WHITE)
+play_again_text = font_title.render('Well done!', True, WHITE)
 play_again_rect = play_again_text.get_rect()
 play_again_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
+
+play_again_text = font_title.render('You finally escaped!', True, WHITE)
+play_again_rect = play_again_text.get_rect()
+play_again_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 10)
 
 continue_text = font_content.render('Press Space', True, WHITE)
 continue_rect = continue_text.get_rect()
@@ -78,7 +85,10 @@ def start_game(mode):
     show_start_screen = False
 
 running = True
+
 while running:
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

@@ -1,9 +1,9 @@
 EttLttLBtLstLttDttLtR
+l   3               r
+l         2    K    r
+l       1           r
+l        p      2   r
 l                   r
-l              K    r
-l                   r
-l        p          r
-l                   r
-l                   r
-l                   r
+l            1      r
+l   3          3    r
 TbbbbbbbbbbbbbbbbbbbZ

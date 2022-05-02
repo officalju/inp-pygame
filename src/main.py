@@ -1,9 +1,16 @@
 from ctypes.wintypes import RGB
 from distutils.util import execute
+from multiprocessing import Condition
 from pickle import FALSE
 from re import X
-from turtle import width
+from tkinter.tix import WINDOW
+from turtle import width, window_height
 import pygame
+from pygame import mixer
+
+mixer.init()
+mixer.music.load('res/Chillig.mp3')
+mixer.music.play()
 
 
 
@@ -21,6 +28,7 @@ class Spritesheet:
         sprite.blit(self.sheet, (0, 0), (x, y, width, height))
         sprite.set_colorkey(Config.WHITE)
         return sprite
+
 
 
 
@@ -82,6 +90,7 @@ class PlayerSprite(BaseSprite):
         self.animation_duration = 30
         self.image = pygame.image.load("res/Fertig hinten.png")
         self.has_knife = False
+        self.has_Key = False
         
         
 
@@ -162,7 +171,7 @@ class PlayerSprite(BaseSprite):
         
 
         hits = pygame.sprite.spritecollide(self, self.game.Tür, False)
-        if hits:
+        if hits and self.has_Key:
             import Puzzle
 
         hits = pygame.sprite.spritecollide(self, self.game.items, False)
@@ -170,6 +179,8 @@ class PlayerSprite(BaseSprite):
             for hit in hits:
                 hit.kill()
                 BildKaputt(self.game, hit.rect.x / 32, hit.rect.y / 32 )
+                Key(self.game, 0, 0)
+                self.has_Key = True
 
 
 
@@ -225,6 +236,15 @@ class ToolbarBackground(BaseSprite):
         }
         super().__init__(game, x, y, groups=game.interface, layer=4, **img_data)
 
+class ToolbarBackground2(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Toolbar2.png"),
+            'x_pos':0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.interface, layer=4, **img_data)
+
 class knife(BaseSprite):
     def __init__(self, game, x, y):
         img_data = {
@@ -233,6 +253,8 @@ class knife(BaseSprite):
             'y_pos': 0
         }
         super().__init__(game, x, y, groups=game.interface, layer=4, **img_data)
+
+
 
 class WallLeft(BaseSprite):
     def __init__(self, game, x, y, width=Config.TILE_SIZE, height=Config.TILE_SIZE):
@@ -356,6 +378,40 @@ class Schrank(BaseSprite):
             'y_pos': 0
         }
         super().__init__(game, x, y, groups=(game.Schrank, game.ground), layer=1, **img_data)
+class Key(BaseSprite):
+    def __init__(self, game, x, y,):
+        img_data = {
+            'spritesheet': Spritesheet("res/Schrank.png"),
+            'x_pos': 0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.interface, layer=1, **img_data)
+class Pfütze_1(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Pfütze 1.png"),
+            'x_pos': 0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.Pfütze, layer=1, **img_data)
+
+class Pfütze_2(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Pfütze 2.png"),
+            'x_pos': 0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.Pfütze, layer=1, **img_data)
+
+class Pfütze_3(BaseSprite):
+    def __init__(self, game, x, y):
+        img_data = {
+            'spritesheet': Spritesheet("res/Pfütze 3.png"),
+            'x_pos': 0,
+            'y_pos': 0
+        }
+        super().__init__(game, x, y, groups=game.Pfütze, layer=1, **img_data)
 
 
 class Game:
@@ -368,6 +424,8 @@ class Game:
         self.bg = pygame.image.load("res/bg-small.png")
         self.bg_x = 0
         pygame.display.set_caption("Unser erstes Pygame-Spiel")
+
+
 
      
 
@@ -413,6 +471,12 @@ class Game:
                         Tür(self, x, y)
                     if c == "s":
                         Schrank(self, x, y)
+                    if c == "1":
+                        Pfütze_1(self, x, y)
+                    if c == "2":
+                        Pfütze_2(self,x , y)
+                    if c == "3":
+                        Pfütze_3(self, x, y)
 
 
 
@@ -430,7 +494,9 @@ class Game:
         self.knife = pygame.sprite.LayeredUpdates()
         self.Tür = pygame.sprite.LayeredUpdates()
         self.Schrank = pygame.sprite.LayeredUpdates()
-        self.Toolbarbackground = ToolbarBackground(self, 0, 0)  
+        self.Pfütze = pygame.sprite.LayeredUpdates()  
+        self.Toolbarbackground = ToolbarBackground2(self, 0, 0)
+        
 
 
         self.load_map("maps/level-01.txt")
@@ -457,6 +523,9 @@ class Game:
         self.all_sprites.draw(self.screen)
         pygame.display.update()
 
+
+                
+
     def game_loop(self):
         counter = 1000
         while self.playing:
@@ -471,12 +540,15 @@ class Game:
             if counter == 0:
                 break
 
+
     def GameOver(self):
         while True:
             self.screen.fill(Config.WHITE)
             display_text = pygame.image.load("res/GameOver.png")
             display_text = pygame.transform.scale(display_text,(Config.WINDOW_WIDTH, Config.WINDOW_HEIGHT))
             self.screen.blit(display_text, (0, 0))
+            End_Text = self.font.render('Press Escape to leave', False, (Config.GREY))
+            self.screen.blit(End_Text, (Config.WINDOW_WIDTH // 2 - 120 , Config.WINDOW_HEIGHT - 30))
             
             pygame.display.flip()
             self.clock.tick(Config.FPS)
