@@ -1,52 +1,66 @@
-* {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-}
 
 body {
-    background: #ffffff;
+    padding: 0px;
+    margin: 0px;
+    background-color: rgb(255, 255, 255);
+}
+
+a {
+    color: black;
 }
 
 .navbar {
-    display: flex;
-    justify-content: space-around;
+    position: fixed;
+    width: 180px;
+    background: rgb(2, 78, 39);
+    height: 100%;
+    margin: 0px;
 }
-
-/* Implementieren Sie Ihre Änderungen hier. Lassen Sie den Code oben so wie er
-* ist!!! */
-.titel {
-  text-align: center;
-  border: 5px solid rgb(0, 76, 255);
-  margin:10px;
+.nav-item {
+    list-style: None;
+    margin: 20px 10px;
 }
-
-.text {
-    background-color: white;
-    margin:10px;
-    margin-left:600px;
-    margin-right:500px;
-}
-.textus {
-    background-color: white;
-    margin:10px;
-    margin-left:600px;
-    margin-right:500px;
-}
- 
 .nav-link {
-color:white;
-background:rgb(0, 76, 255);
-font-size: 20px;
-text-decoration: none;
-margin: 50px;
+    text-decoration: None;
+    color: rgb rgb(96, 62, 62);
+    font-size: 1.4rem;
+    transition: all 400ms;
+}
+.nav-link:hover {
+    font-size: 1.6rem;
+}
+h1 {
+    width: 200%;
+    background: rgb(112, 112, 112);
+    color: rgb black;
+    margin-bottom: 10px;
+    padding: 30px 20px;
 }
 
-.navbar{
-list-style: none;
-margin:25px;
-background: rgb(0, 76, 255);
-padding: 20px;
+h2 {
+    font-size: 50px;
+    color: rgb(68, 107, 68);
+    margin-bottom: 10px;
+  
+}
+p{
+    font-size: 30px;
+    color: rgb(68, 107, 68);
+
+}
+h3{
+    font-size: 30px;
+    color:rgb(68, 107, 68);
+}
+h4{
+    font-size: 30px;
+    color: rgb(212, 188, 236);
+}
+#content {
+    margin-left: 100px;
+    padding:50px 300px;
 }
 
-
+img{
+    padding: 60px;
+}
