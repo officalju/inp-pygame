@@ -528,7 +528,7 @@ class Game:
                 
 
     def game_loop(self):
-        counter = 10000
+        counter = 1000
         while self.playing:
             self.handle_events()
             self.update()
