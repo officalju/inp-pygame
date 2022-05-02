@@ -32,7 +32,7 @@ title_text = font_title.render('Puzzle Game', True, GREEN)
 title_rect = title_text.get_rect()
 title_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 80)
 
-medium_text = font_content.render("Press M to \ start the Puzzle", True, ORANGE)
+medium_text = font_content.render("Press M to start the Puzzle", True, ORANGE)
 medium_rect = medium_text.get_rect()
 medium_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 90)
 
@@ -44,9 +44,6 @@ play_again_text = font_title.render('You finally escaped!', True, WHITE)
 play_again_rect = play_again_text.get_rect()
 play_again_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 10)
 
-continue_text = font_content.render('Press Space', True, WHITE)
-continue_rect = continue_text.get_rect()
-continue_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 50)
 
 
 
@@ -105,12 +102,9 @@ while running:
 
             if show_start_screen:
                 keys = pygame.key.get_pressed()
-                if keys[pygame.K_e]:
-                    start_game(3)
-                elif keys[pygame.K_m]:
+                if keys[pygame.K_m]:
                     start_game(4)
-                elif keys[pygame.K_h]:
-                    start_game(5)
+
 
 
 
@@ -167,8 +161,7 @@ while running:
         else:
             screen.blit(bg, bg_rect)
             screen.blit(play_again_text, play_again_rect)
-            screen.blit(continue_text, continue_rect)
-            
+
 
     pygame.display.update()
     clock.tick(FPS)

@@ -179,7 +179,7 @@ class PlayerSprite(BaseSprite):
             for hit in hits:
                 hit.kill()
                 BildKaputt(self.game, hit.rect.x / 32, hit.rect.y / 32 )
-                Key(self.game, 0, 0)
+                Key(self.game, 1, 0)
                 self.has_Key = True
 
 
@@ -379,13 +379,13 @@ class Schrank(BaseSprite):
         }
         super().__init__(game, x, y, groups=(game.Schrank, game.ground), layer=1, **img_data)
 class Key(BaseSprite):
-    def __init__(self, game, x, y,):
+    def __init__(self, game, x, y):
         img_data = {
-            'spritesheet': Spritesheet("res/Schrank.png"),
+            'spritesheet': Spritesheet("res/Schlüssel.png"),
             'x_pos': 0,
             'y_pos': 0
         }
-        super().__init__(game, x, y, groups=game.interface, layer=1, **img_data)
+        super().__init__(game, x, y, groups=game.interface, layer=4, **img_data)
 class Pfütze_1(BaseSprite):
     def __init__(self, game, x, y):
         img_data = {
@@ -496,7 +496,8 @@ class Game:
         self.Schrank = pygame.sprite.LayeredUpdates()
         self.Pfütze = pygame.sprite.LayeredUpdates()  
         self.Toolbarbackground = ToolbarBackground2(self, 0, 0)
-        
+        self.Toolbarbackground2 = ToolbarBackground(self, 1, 0)
+
 
 
         self.load_map("maps/level-01.txt")
@@ -527,7 +528,7 @@ class Game:
                 
 
     def game_loop(self):
-        counter = 1000
+        counter = 10000
         while self.playing:
             self.handle_events()
             self.update()
